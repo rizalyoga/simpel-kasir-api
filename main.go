@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Server started in port 5500")
+	fmt.Println("Server started in port 8080")
 
 	// Products endpoint
 	http.HandleFunc("GET /api/products", services.GetProducts)
@@ -36,7 +36,7 @@ func main() {
 		})
 	})
 
-	err := http.ListenAndServe(":5500", nil)
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("Failed to start server:", err)
 	}
