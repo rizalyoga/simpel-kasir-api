@@ -43,6 +43,10 @@ func main() {
 	productService := services.NewProductService(productRepo)
 	productHandler := handlers.NewProductHandler(productService)
 
+	categoryRepo := repositories.NewCategoryRepository(db)
+	categoryService := services.NewCategoryService(categoryRepo)
+	categoryHandler := handlers.NewCategoryHandler(categoryService)
+
 	fmt.Println("Server started in port", config.Port)
 
 	http.HandleFunc("GET /api/products", productHandler.HandleProducts)
@@ -51,11 +55,11 @@ func main() {
 	http.HandleFunc("PUT /api/products/", productHandler.HandleProductByID)
 	http.HandleFunc("DELETE /api/products/", productHandler.HandleProductByID)
 
-	http.HandleFunc("GET /api/categories", handlers.GetCategories)
-	http.HandleFunc("GET /api/categories/{id}", handlers.GetCategory)
-	http.HandleFunc("POST /api/categories", handlers.CreateCategory)
-	http.HandleFunc("PUT /api/categories/{id}", handlers.UpdateCategory)
-	http.HandleFunc("DELETE /api/categories/{id}", handlers.DeleteCategory)
+	http.HandleFunc("GET /api/categories", categoryHandler.HandleCategories)
+	http.HandleFunc("POST /api/categories", categoryHandler.HandleCategories)
+	http.HandleFunc("GET /api/categories/", categoryHandler.HandleCategoryByID)
+	http.HandleFunc("PUT /api/categories/", categoryHandler.HandleCategoryByID)
+	http.HandleFunc("DELETE /api/categories/", categoryHandler.HandleCategoryByID)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
