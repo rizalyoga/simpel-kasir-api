@@ -1,147 +1,47 @@
 package services
 
 import (
-	"encoding/json"
+	"kasir-api-bootcamp/common/errors"
 	"kasir-api-bootcamp/models"
-	"kasir-api-bootcamp/repository"
-	"net/http"
-	"strconv"
+	"kasir-api-bootcamp/repositories"
 )
 
-func GetCategories(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(Response{
-		Status:  http.StatusOK,
-		Message: "Category list",
-		Data:    repository.Categories,
-	})
+func GetCategories() ([]models.Category, error) {
+	return repositories.Categories, nil
 }
 
-func GetCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	idStr := r.PathValue("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		json.NewEncoder(w).Encode(Response{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid ID",
-			Data:    nil,
-		})
-		return
-	}
-
-	for _, c := range repository.Categories {
+func GetCategory(id int) (*models.Category, error) {
+	for _, c := range repositories.Categories {
 		if c.ID == id {
-			json.NewEncoder(w).Encode(Response{
-				Status:  http.StatusOK,
-				Message: "Category details",
-				Data:    c,
-			})
-			return
+			return &c, nil
 		}
 	}
-
-	json.NewEncoder(w).Encode(Response{
-		Status:  http.StatusNotFound,
-		Message: "Category not found",
-		Data:    nil,
-	})
+	return nil, &errors.ErrNotFound{Resource: "Category", ID: id}
 }
 
-func CreateCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var newCategory models.Category
-	if err := json.NewDecoder(r.Body).Decode(&newCategory); err != nil {
-		json.NewEncoder(w).Encode(Response{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid request body",
-			Data:    nil,
-		})
-		return
-	}
-
-	newCategory.ID = len(repository.Categories) + 1
-	repository.Categories = append(repository.Categories, newCategory)
-
-	json.NewEncoder(w).Encode(Response{
-		Status:  http.StatusCreated,
-		Message: "Category added successfully",
-		Data:    newCategory,
-	})
+func CreateCategory(newCategory models.Category) (*models.Category, error) {
+	newCategory.ID = len(repositories.Categories) + 1
+	repositories.Categories = append(repositories.Categories, newCategory)
+	return &newCategory, nil
 }
 
-func UpdateCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	idStr := r.PathValue("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		json.NewEncoder(w).Encode(Response{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid ID",
-			Data:    nil,
-		})
-		return
-	}
-
-	var updatedCategory models.Category
-	if err := json.NewDecoder(r.Body).Decode(&updatedCategory); err != nil {
-		json.NewEncoder(w).Encode(Response{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid request body",
-			Data:    nil,
-		})
-		return
-	}
-
-	for i, p := range repository.Categories {
-		if p.ID == id {
+func UpdateCategory(id int, updatedCategory models.Category) (*models.Category, error) {
+	for i, c := range repositories.Categories {
+		if c.ID == id {
 			updatedCategory.ID = id
-			repository.Categories[i] = updatedCategory
-			json.NewEncoder(w).Encode(Response{
-				Status:  http.StatusOK,
-				Message: "Category updated successfully",
-				Data:    updatedCategory,
-			})
-			return
+			repositories.Categories[i] = updatedCategory
+			return &updatedCategory, nil
 		}
 	}
-
-	json.NewEncoder(w).Encode(Response{
-		Status:  http.StatusNotFound,
-		Message: "Category not found",
-		Data:    nil,
-	})
+	return nil, &errors.ErrNotFound{Resource: "Category", ID: id}
 }
 
-func DeleteCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	idStr := r.PathValue("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		json.NewEncoder(w).Encode(Response{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid ID",
-			Data:    nil,
-		})
-		return
-	}
-
-	for i, c := range repository.Categories {
+func DeleteCategory(id int) error {
+	for i, c := range repositories.Categories {
 		if c.ID == id {
-			deletedCategory := c
-			repository.Categories = append(repository.Categories[:i], repository.Categories[i+1:]...)
-			json.NewEncoder(w).Encode(Response{
-				Status:  http.StatusOK,
-				Message: "Category deleted successfully",
-				Data:    deletedCategory,
-			})
-			return
+			repositories.Categories = append(repositories.Categories[:i], repositories.Categories[i+1:]...)
+			return nil
 		}
 	}
-
-	json.NewEncoder(w).Encode(Response{
-		Status:  http.StatusNotFound,
-		Message: "Category not found",
-		Data:    nil,
-	})
+	return &errors.ErrNotFound{Resource: "Category", ID: id}
 }
