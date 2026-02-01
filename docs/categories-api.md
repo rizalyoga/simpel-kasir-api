@@ -3,12 +3,13 @@
 ## Get All Categories
 
 - **Endpoint:** `GET /api/categories`
-- **Description:** Retrieve all categories
+- **Description:** Retrieve all categories from database
 
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Category list",
   "data": [
     { "id": 1, "name": "Bahan Pokok", "description": "Bahan pokok sehari - hari." },
@@ -28,7 +29,8 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Category details",
   "data": { "id": 1, "name": "Bahan Pokok", "description": "Bahan pokok sehari - hari." }
 }
@@ -37,7 +39,8 @@
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -46,8 +49,9 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Category not found",
+  "status": "error",
+  "code": 404,
+  "message": "category not found",
   "data": null
 }
 ```
@@ -70,7 +74,8 @@
 **Response (Success):**
 ```json
 {
-  "status": 201,
+  "status": "success",
+  "code": 201,
   "message": "Category added successfully",
   "data": { "id": 4, "name": "Susu", "description": "Minuman susu dan olahannya." }
 }
@@ -79,7 +84,8 @@
 **Response (Error - Invalid Body):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid request body",
   "data": null
 }
@@ -103,7 +109,8 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Category updated successfully",
   "data": { "id": 1, "name": "Bahan Pokok", "description": "Bahan-bahan pokok untuk memasak." }
 }
@@ -112,7 +119,8 @@
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -121,8 +129,9 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Category not found",
+  "status": "error",
+  "code": 404,
+  "message": "category not found",
   "data": null
 }
 ```
@@ -137,16 +146,18 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Category deleted successfully",
-  "data": { "id": 1, "name": "Bahan Pokok", "description": "Bahan pokok sehari - hari." }
+  "data": null
 }
 ```
 
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -155,8 +166,20 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Category not found",
+  "status": "error",
+  "code": 404,
+  "message": "category not found",
   "data": null
 }
 ```
+
+---
+
+## Error Messages
+
+| Scenario | Message |
+|----------|---------|
+| Invalid ID | "Invalid ID" |
+| Category not found | "category not found" |
+| Invalid request body | "Invalid request body" |
+| Method not allowed | "Method not allowed" |

@@ -3,12 +3,13 @@
 ## Get All Products
 
 - **Endpoint:** `GET /api/products`
-- **Description:** Retrieve all products
+- **Description:** Retrieve all products from database
 
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Product list",
   "data": [
     { "id": 1, "name": "Indomie", "price": 3500, "stock": 40 },
@@ -28,8 +29,9 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
-  "message": "Products details",
+  "status": "success",
+  "code": 200,
+  "message": "Product details",
   "data": { "id": 1, "name": "Indomie", "price": 3500, "stock": 40 }
 }
 ```
@@ -37,7 +39,8 @@
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -46,8 +49,9 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Product not found",
+  "status": "error",
+  "code": 404,
+  "message": "product not found",
   "data": null
 }
 ```
@@ -71,7 +75,8 @@
 **Response (Success):**
 ```json
 {
-  "status": 201,
+  "status": "success",
+  "code": 201,
   "message": "Product added successfully",
   "data": { "id": 4, "name": "Teh Botol", "price": 5000, "stock": 25 }
 }
@@ -80,7 +85,8 @@
 **Response (Error - Invalid Body):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid request body",
   "data": null
 }
@@ -96,7 +102,7 @@
 **Body (JSON):**
 ```json
 {
-  "name": "Inmie Goreng",
+  "name": "Indomie Goreng",
   "price": 4000,
   "stock": 50
 }
@@ -105,16 +111,18 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Product updated successfully",
-  "data": { "id": 1, "name": "Inmie Goreng", "price": 4000, "stock": 50 }
+  "data": { "id": 1, "name": "Indomie Goreng", "price": 4000, "stock": 50 }
 }
 ```
 
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -123,8 +131,9 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Product not found",
+  "status": "error",
+  "code": 404,
+  "message": "product not found",
   "data": null
 }
 ```
@@ -139,16 +148,18 @@
 **Response (Success):**
 ```json
 {
-  "status": 200,
+  "status": "success",
+  "code": 200,
   "message": "Product deleted successfully",
-  "data": { "id": 1, "name": "Indomie", "price": 3500, "stock": 40 }
+  "data": null
 }
 ```
 
 **Response (Error - Invalid ID):**
 ```json
 {
-  "status": 400,
+  "status": "error",
+  "code": 400,
   "message": "Invalid ID",
   "data": null
 }
@@ -157,8 +168,20 @@
 **Response (Error - Not Found):**
 ```json
 {
-  "status": 404,
-  "message": "Product not found",
+  "status": "error",
+  "code": 404,
+  "message": "product not found",
   "data": null
 }
 ```
+
+---
+
+## Error Messages
+
+| Scenario | Message |
+|----------|---------|
+| Invalid ID | "Invalid ID" |
+| Product not found | "product not found" |
+| Invalid request body | "Invalid request body" |
+| Method not allowed | "Method not allowed" |
