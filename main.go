@@ -65,7 +65,11 @@ func main() {
 		})
 	})
 
+	if config.Port == "" {
+		config.Port = "8080"
+	}
 	err = http.ListenAndServe(":"+config.Port, nil)
+
 	if err != nil {
 		fmt.Println("Failed to run server:", err)
 	}
