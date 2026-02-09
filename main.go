@@ -47,6 +47,14 @@ func main() {
 	categoryService := services.NewCategoryService(categoryRepo)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
 
+	transactionRepo := repositories.NewTransactionRepository(db)
+	transactionService := services.NewTransactionService(transactionRepo)
+	transactionHandler := handlers.NewTransactionHandler(transactionService)
+
+	reportRepo := repositories.NewReportRepository(db)
+	reportService := services.NewReportService(reportRepo)
+	reportHandler := handlers.NewReportHandler(reportService)
+
 	fmt.Println("Server started in port", config.Port)
 
 	http.HandleFunc("GET /api/products", productHandler.HandleProducts)
@@ -60,6 +68,11 @@ func main() {
 	http.HandleFunc("GET /api/categories/", categoryHandler.HandleCategoryByID)
 	http.HandleFunc("PUT /api/categories/", categoryHandler.HandleCategoryByID)
 	http.HandleFunc("DELETE /api/categories/", categoryHandler.HandleCategoryByID)
+
+	http.HandleFunc("POST /api/checkout", transactionHandler.HandleCheckout)
+
+	http.HandleFunc("GET /api/report/today", reportHandler.HandleReport)
+	http.HandleFunc("GET /api/report", reportHandler.HandleReport)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

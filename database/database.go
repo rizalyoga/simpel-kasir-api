@@ -4,23 +4,23 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/stdlib"
 )
 
 func InitDB(connectionString string) (*sql.DB, error) {
-	// Open database
-	db, err := sql.Open("pgx", connectionString)
+	config, err := pgx.ParseConfig(connectionString)
 	if err != nil {
 		return nil, err
 	}
 
-	// Test connection
-	err = db.Ping()
-	if err != nil {
+	config.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	db := stdlib.OpenDB(*config)
+	if err := db.Ping(); err != nil {
 		return nil, err
 	}
 
-	// Set connection pool settings (optional tapi recommended)
 	db.SetMaxOpenConns(25)
 	db.SetMaxIdleConns(5)
 

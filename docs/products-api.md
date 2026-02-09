@@ -4,8 +4,10 @@
 
 - **Endpoint:** `GET /api/products`
 - **Description:** Retrieve all products from database
+- **Query Parameters (Optional):**
+  - `name` - Search products by name (case-insensitive partial match)
 
-**Response (Success):**
+**Response (Success - All Products):**
 ```json
 {
   "status": "success",
@@ -15,6 +17,19 @@
     { "id": 1, "name": "Indomie", "price": 3500, "stock": 40 },
     { "id": 2, "name": "Kecap Manis Sedap", "price": 3000, "stock": 40 },
     { "id": 3, "name": "Gula", "price": 16000, "stock": 20 }
+  ]
+}
+```
+
+**Response (Success - Search by Name):**
+```json
+{
+  "status": "success",
+  "code": 200,
+  "message": "Product list",
+  "data": [
+    { "id": 1, "name": "Indomie", "price": 3500, "stock": 40 },
+    { "id": 4, "name": "Indomie Goreng", "price": 4000, "stock": 25 }
   ]
 }
 ```
